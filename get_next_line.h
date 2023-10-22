@@ -9,54 +9,19 @@
 /*   Updated: 2023/08/14 18:34:19 by saleshin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "get_next_line.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
+# include <unistd.h>
+# include <fcntl.h>
+# include <stdio.h>
+# include <stdlib.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif
 
-char	*get_next_line(int fd)
-{
-	char		buffer[BUFFER_SIZE];
-	static char	*str;
-	char		*line;
-	size_t		i;
-
-	i = 0;
-	line = NULL;
-	if (str == NULL)
-	{
-		if (!read (fd, buffer, BUFFER_SIZE))
-			return (NULL);
-		str = add_buffer(str, buffer);
-	}
-	while (str[i] != '\n')
-	{
-		if (str[i] == '\0')
-		{
-			if (!read(fd, buffer, BUFFER_SIZE))
-				return (NULL);
-			str = add_buffer(str, buffer);
-		}
-		i++;
-	}
-	line = make_line(str, i + 1);
-	str = save_tale(str, i + 1);
-	return (line);
-}
-
-int	main(void)
-{
-	int		fd;
-	char	*line;
-
-	fd = open("./test.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		printf("error opening file\n");
-		return (1);
-	}
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		printf("next line: %s", line);
-		line = get_next_line(fd);
-	}
-	return (0);
-}
+char	*get_next_line(int fd);
+size_t	ft_strlen(const char *str);
+char	*add_buffer(char *str, char *buffer);
+char	*save_tale(char *str, size_t n);
+char	*make_line(char *str, size_t n);
+#endif
