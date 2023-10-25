@@ -25,13 +25,13 @@ size_t	ft_strlen(const char *str)
 	return (res);
 }
 
-char	*add_buffer(char *str, char *buffer)
+char	*add_buffer(char *str, char *buffer, size_t n)
 {
 	char	*res;
 	size_t	i;
 	size_t	j;	
 
-	res = malloc((ft_strlen(str) + ft_strlen(buffer)) * sizeof(char));
+	res = malloc((ft_strlen(str) + n) * sizeof(char));
 	if (res == NULL)
 		return (0);
 	i = 0;
@@ -44,11 +44,28 @@ char	*add_buffer(char *str, char *buffer)
 		}
 	}
 	j = 0;
-	while (j < BUFFER_SIZE)
+	while (j < n)
 		res[i++] = buffer[j++];
 	res[i] = '\0';
-	free(str);
 	return (res);
+}
+
+size_t	get_buffer(int fd, char *str)
+{
+	size_t	n;
+	char	buffer[BUFFER_SIZE];
+	char	*res;
+
+	n = read(fd, buffer, BUFFER_SIZE);
+	printf("%lu, %s\n", n, buffer);
+	if (n > 0)
+	{
+		res = add_buffer(str, buffer, n);
+		str = res;
+		printf("get buffer: %s, len = %lu\n", str, ft_strlen(str));
+		return (ft_strlen(str));
+	}
+	return (0);
 }
 
 char	*save_tale(char *str, size_t n)

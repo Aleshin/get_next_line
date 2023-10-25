@@ -13,26 +13,22 @@
 
 char	*get_next_line(int fd)
 {
-	char		buffer[BUFFER_SIZE];
 	static char	*str;
 	char		*line;
 	size_t		i;
 
 	i = 0;
-	line = NULL;
-	if (str == NULL)
-	{
-		if (!read (fd, buffer, BUFFER_SIZE))
-			return (NULL);
-		str = add_buffer(str, buffer);
-	}
+	i = get_buffer(fd, str);
+	printf("i = %lu, str: %s\n", i, str);
+	if (get_buffer(fd, str) == 0)
+		return (0);
+//	printf("str: %s\n", str);
 	while (str[i] != '\n')
 	{
 		if (str[i] == '\0')
 		{
-			if (!read(fd, buffer, BUFFER_SIZE))
-				return (NULL);
-			str = add_buffer(str, buffer);
+			if (get_buffer(fd, str) == 0)
+				return (0);
 		}
 		i++;
 	}
@@ -45,18 +41,23 @@ int	main(void)
 {
 	int		fd;
 	char	*line;
-
+//	char	buffer[BUFFER_SIZE];
 	fd = open("./test.txt", O_RDONLY);
 	if (fd == -1)
 	{
 		printf("error opening file\n");
 		return (1);
 	}
+	line = NULL;
+//	read(fd, line, BUFFER_SIZE);
 	line = get_next_line(fd);
+	printf("next line: %s", line);
+	/*
 	while (line != NULL)
 	{
 		printf("next line: %s", line);
 		line = get_next_line(fd);
 	}
+	*/
 	return (0);
 }
