@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+int	ft_strlen(const char *str)
 {
-	size_t	res;
+	int	res;
 
 	res = 0;
 	if (str == NULL)
@@ -25,29 +25,30 @@ size_t	ft_strlen(const char *str)
 	return (res);
 }
 
-char	*add_buffer(char *str, char *buffer, size_t n)
+char	*add_buffer(char *str, char *buffer, int n)
 {
 	char	*res;
-	size_t	i;
-	size_t	j;	
+	int		i;
+	int		j;
 
-	res = malloc((ft_strlen(str) + n) * sizeof(char));
+	res = malloc((ft_strlen(str) + n + 1) * sizeof(char));
 	if (res == NULL)
-		return (0);
+		return (NULL);
 	i = 0;
-	if (str != NULL)
+	while (str != NULL && str[i] != '\0')
 	{
-		while (str[i] != '\0')
-		{
-			res[i] = str[i];
-			i++;
-		}
+		res[i] = str[i];
+		i++;
 	}
 	j = 0;
 	while (j < n)
 		res[i++] = buffer[j++];
 	res[i] = '\0';
-	free(str);
+	if (i == 0)
+	{
+		free(res);
+		res = NULL;
+	}
 	return (res);
 }
 
@@ -57,42 +58,54 @@ char	*get_buffer(int fd, char *str)
 	char	buffer[BUFFER_SIZE];
 	char	*res;
 
+	res = NULL;
 	n = read(fd, buffer, BUFFER_SIZE);
 	if (n >= 0)
 	{
 		res = add_buffer(str, buffer, n);
-//		printf("n = %d, strlen = %zu, str = %s\n", n, ft_strlen(res), res);
-		if ((*res == '\0' && n == 0) || res == 0)
-			return (0);
-		return (res);
+		free(str);
 	}
-	return (0);
+	if (n < 0)
+		return (0);
+	if (res == NULL)
+		return (0);
+	if (*res == '\0' && n == 0)
+		return (0);
+	return (res);
 }
 
-char	*save_tale(char *str, size_t n)
+char	*save_tale(char *str, int n)
 {
 	char	*res;
-	size_t	i;
-	size_t	j;
+	int		i;
+	int		j;
 
 	i = n;
 	j = 0;
-	res = malloc((ft_strlen(str) - n) * sizeof(char));
+	res = malloc((ft_strlen(str) - n + 1) * sizeof(char));
 	if (res == NULL)
+	{
+		free(str);
 		return (0);
+	}
 	while (i < ft_strlen(str))
 		res[j++] = str[i++];
 	res[j] = '\0';
 	free(str);
+	if (j == 0)
+	{
+		free(res);
+		res = NULL;
+	}
 	return (res);
 }
 
-char	*make_line(char *str, size_t n)
+char	*make_line(char *str, int n)
 {
 	char	*res;
-	size_t	i;
+	int		i;
 
-	res = malloc((n) * sizeof(char));
+	res = malloc((n + 1) * sizeof(char));
 	if (res == NULL)
 		return (NULL);
 	i = 0;
@@ -102,5 +115,10 @@ char	*make_line(char *str, size_t n)
 		i++;
 	}
 	res[i] = '\0';
+	if (i == 0)
+	{
+		free (res);
+		res = NULL;
+	}
 	return (res);
 }
