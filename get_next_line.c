@@ -18,17 +18,18 @@ char	*get_next_line(int fd)
 	size_t		i;
 
 	i = 0;
-	i = get_buffer(fd, str);
-	printf("i = %lu, str: %s\n", i, str);
-	if (get_buffer(fd, str) == 0)
+	str = get_buffer(fd, str);
+	if (str == 0)
 		return (0);
-//	printf("str: %s\n", str);
 	while (str[i] != '\n')
 	{
 		if (str[i] == '\0')
 		{
-			if (get_buffer(fd, str) == 0)
+			str = get_buffer(fd, str);
+			if (str == 0)
 				return (0);
+			else if (ft_strlen(str) == i)
+				break ;
 		}
 		i++;
 	}
@@ -36,12 +37,12 @@ char	*get_next_line(int fd)
 	str = save_tale(str, i + 1);
 	return (line);
 }
-
+/*
 int	main(void)
 {
 	int		fd;
 	char	*line;
-//	char	buffer[BUFFER_SIZE];
+
 	fd = open("./test.txt", O_RDONLY);
 	if (fd == -1)
 	{
@@ -49,15 +50,13 @@ int	main(void)
 		return (1);
 	}
 	line = NULL;
-//	read(fd, line, BUFFER_SIZE);
 	line = get_next_line(fd);
 	printf("next line: %s", line);
-	/*
 	while (line != NULL)
 	{
-		printf("next line: %s", line);
 		line = get_next_line(fd);
+		printf("next line: %s", line);
 	}
-	*/
 	return (0);
 }
+*/

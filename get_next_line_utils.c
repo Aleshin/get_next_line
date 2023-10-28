@@ -47,23 +47,23 @@ char	*add_buffer(char *str, char *buffer, size_t n)
 	while (j < n)
 		res[i++] = buffer[j++];
 	res[i] = '\0';
+	free(str);
 	return (res);
 }
 
-size_t	get_buffer(int fd, char *str)
+char	*get_buffer(int fd, char *str)
 {
-	size_t	n;
+	int		n;
 	char	buffer[BUFFER_SIZE];
 	char	*res;
 
 	n = read(fd, buffer, BUFFER_SIZE);
-	printf("%lu, %s\n", n, buffer);
-	if (n > 0)
+	if (n >= 0)
 	{
 		res = add_buffer(str, buffer, n);
-		str = res;
-		printf("get buffer: %s, len = %lu\n", str, ft_strlen(str));
-		return (ft_strlen(str));
+		if ((*res == '\0' && n == 0) || res == 0)
+			return (0);
+		return (res);
 	}
 	return (0);
 }
@@ -103,33 +103,3 @@ char	*make_line(char *str, size_t n)
 	res[i] = '\0';
 	return (res);
 }
-/*
-char	*ft_strncat(char *dst, const char *src, size_t n)
-{
-	size_t	i;
-	size_t	j;
-	char	*res;
-
-	res = malloc((ft_strlen(dst) + n) * sizeof(char));
-	if (res == NULL)
-		return (0);
-	i = 0;
-	if (dst != NULL)
-	{
-		while (dst[i] != '\0')
-		{
-			res[i] = dst[i];
-			i++;
-		}
-	}
-	j = 0;
-	while (j < n)
-	{
-		res[i] = src[j];
-		i++;
-		j++;
-	}
-	res[i] = '\0';
-	return (res);
-}
-*/
