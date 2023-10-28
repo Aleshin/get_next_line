@@ -11,33 +11,48 @@
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
+int	find_nl(int fd, char *str)
 {
-	static char	*str;
-	char		*line;
-	size_t		i;
+	int	i;
 
 	i = 0;
-	str = get_buffer(fd, str);
-	if (str == 0)
-		return (0);
 	while (str[i] != '\n')
 	{
 		if (str[i] == '\0')
 		{
 			str = get_buffer(fd, str);
 			if (str == 0)
-				return (0);
-			else if (ft_strlen(str) == i)
+				return (-1);
+			else if ((int)ft_strlen(str) == i)
 				break ;
+			i--;
+			printf("strlen = %zu, i = %d, str = %s\n", ft_strlen(str), i, str);
 		}
+//		printf("%d, ", i);
 		i++;
 	}
-	line = make_line(str, i + 1);
-	str = save_tale(str, i + 1);
+//	printf("+++++++++++++++++++++  i = %d, line = %s\n", i, str);
+	return (i);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*str;
+	char		*line;
+	int			i;
+
+	if (str == 0)
+		str = get_buffer(fd, str);
+	if (str == 0)
+		return (0);
+	i = find_nl(fd, str);
+	if (i == -1)
+		return (0);
+	line = make_line(str, (size_t)i + 1);
+	str = save_tale(str, (size_t)i + 1);
 	return (line);
 }
-/*
+
 int	main(void)
 {
 	int		fd;
@@ -59,4 +74,3 @@ int	main(void)
 	}
 	return (0);
 }
-*/

@@ -61,6 +61,7 @@ char	*get_buffer(int fd, char *str)
 	if (n >= 0)
 	{
 		res = add_buffer(str, buffer, n);
+//		printf("n = %d, strlen = %zu, str = %s\n", n, ft_strlen(res), res);
 		if ((*res == '\0' && n == 0) || res == 0)
 			return (0);
 		return (res);

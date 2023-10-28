@@ -23,6 +23,7 @@ char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
 char	*add_buffer(char *str, char *buffer, size_t n);
 char	*get_buffer(int fd, char *str);
+int		find_nl(int fd, char *str);
 char	*save_tale(char *str, size_t n);
 char	*make_line(char *str, size_t n);
 #endif
