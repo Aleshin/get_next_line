@@ -15,6 +15,13 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <limits.h>
+# ifdef BUFFER_SIZE
+#  if BUFFER_SIZE > 1000000
+#   undef BUFFER_SIZE
+#   define BUFFER_SIZE 1000000
+#  endif
+# endif
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 10
 # endif

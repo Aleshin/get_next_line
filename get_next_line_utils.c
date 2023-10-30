@@ -65,12 +65,11 @@ char	*get_buffer(int fd, char *str)
 		res = add_buffer(str, buffer, n);
 		free(str);
 	}
-	if (n < 0)
+	if ((n < 0) || (res == NULL) || (*res == '\0' && n == 0))
+	{
+		free(str);
 		return (0);
-	if (res == NULL)
-		return (0);
-	if (*res == '\0' && n == 0)
-		return (0);
+	}
 	return (res);
 }
 

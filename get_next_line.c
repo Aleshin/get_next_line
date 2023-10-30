@@ -56,9 +56,11 @@ int	main(void)
 	printf("next line: %s", line);
 	while (line != NULL)
 	{
+		free(line);
 		line = get_next_line(fd);
 		printf("next line: %s", line);
 	}
+	free(line);
 	return (0);
 }
 */
