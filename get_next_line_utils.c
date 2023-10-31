@@ -47,7 +47,7 @@ char	*add_buffer(char *str, char *buffer, int n)
 	if (i == 0)
 	{
 		free(res);
-		res = NULL;
+		return (NULL);
 	}
 	return (res);
 }
@@ -67,7 +67,8 @@ char	*get_buffer(int fd, char *str)
 	}
 	if ((n < 0) || (res == NULL) || (*res == '\0' && n == 0))
 	{
-		free(str);
+		if (n == -1)
+			free(str);
 		return (0);
 	}
 	return (res);
