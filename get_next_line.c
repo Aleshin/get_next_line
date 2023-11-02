@@ -35,7 +35,7 @@ char	*get_next_line(int fd)
 		}
 		i++;
 	}
-	line = make_line(str, i + 1);
+	line = make_line(&str, i + 1);
 	str = save_tale(str, i + 1);
 	return (line);
 }

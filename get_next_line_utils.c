@@ -82,6 +82,8 @@ char	*save_tale(char *str, int n)
 
 	i = n;
 	j = 0;
+	if (!str)
+		return (0);
 	res = malloc((ft_strlen(str) - n + 1) * sizeof(char));
 	if (res == NULL)
 	{
@@ -100,24 +102,30 @@ char	*save_tale(char *str, int n)
 	return (res);
 }
 
-char	*make_line(char *str, int n)
+char	*make_line(char **str, int n)
 {
 	char	*res;
 	int		i;
 
 	res = malloc((n + 1) * sizeof(char));
 	if (res == NULL)
+	{
+		free (*str);
+		*str = NULL;
 		return (NULL);
+	}
 	i = 0;
 	while (i < n)
 	{
-		res[i] = str[i];
+		res[i] = (*str)[i];
 		i++;
 	}
 	res[i] = '\0';
 	if (i == 0)
 	{
 		free (res);
+		free (*str);
+		*str = NULL;
 		res = NULL;
 	}
 	return (res);

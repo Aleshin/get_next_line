@@ -31,5 +31,5 @@ int		ft_strlen(const char *str);
 char	*add_buffer(char *str, char *buffer, int n);
 char	*get_buffer(int fd, char *str);
 char	*save_tale(char *str, int n);
-char	*make_line(char *str, int n);
+char	*make_line(char **str, int n);
 #endif
